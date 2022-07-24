@@ -12,7 +12,7 @@ from poetry.console.commands.install import InstallCommand
 from poetry.plugins.application_plugin import ApplicationPlugin
 
 
-class PreCommitPlugin(ApplicationPlugin):
+class PreCommitPlugin(ApplicationPlugin):  # type: ignore
     def activate(self, application: Application) -> None:
         application.event_dispatcher.add_listener(TERMINATE, self._handle_post_command)
 
@@ -21,7 +21,7 @@ class PreCommitPlugin(ApplicationPlugin):
     ) -> None:
         # this attribute seems to only be present on a TERMINATE event, so be careful
         # to not use similar logic if listening to different events
-        exit_code = event._exit_code  # type: ignore
+        exit_code: int = event._exit_code
 
         if exit_code != 0:
             # The command failed, so the plugin shouldn't do anything
