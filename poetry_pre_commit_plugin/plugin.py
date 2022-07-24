@@ -1,14 +1,15 @@
-from cleo.events.console_events import TERMINATE
-from cleo.io.io import IO
-from cleo.events.console_command_event import ConsoleCommandEvent
-from cleo.events.event_dispatcher import EventDispatcher
-from poetry.plugins.application_plugin import ApplicationPlugin
-from poetry.console.application import Application
-from poetry.console.commands.install import InstallCommand
-from poetry.console.commands.add import AddCommand
 import subprocess
 from pathlib import Path
 from typing import Optional
+
+from cleo.events.console_command_event import ConsoleCommandEvent
+from cleo.events.console_events import TERMINATE
+from cleo.events.event_dispatcher import EventDispatcher
+from cleo.io.io import IO
+from poetry.console.application import Application
+from poetry.console.commands.add import AddCommand
+from poetry.console.commands.install import InstallCommand
+from poetry.plugins.application_plugin import ApplicationPlugin
 
 
 class PreCommitPlugin(ApplicationPlugin):
@@ -47,7 +48,7 @@ class PreCommitPlugin(ApplicationPlugin):
         try:
             io.write_line("<info>Installing pre-commit hooks...</>")
             return_code = subprocess.check_call(
-                ["pre-commit", "install"],
+                ["poetry", "run", "pre-commit", "install"],
                 stdout=subprocess.DEVNULL,
                 stderr=subprocess.DEVNULL,
             )
@@ -66,7 +67,7 @@ class PreCommitPlugin(ApplicationPlugin):
     def _is_pre_commit_package_installed(self) -> bool:
         try:
             return_code = subprocess.check_call(
-                ["pre-commit", "--version"],
+                ["poetry", "run", "pre-commit", "--version"],
                 stdout=subprocess.DEVNULL,
                 stderr=subprocess.DEVNULL,
             )
@@ -86,5 +87,5 @@ class PreCommitPlugin(ApplicationPlugin):
                 ["git", "rev-parse", "--show-toplevel"],
             )
             return Path(result.decode().strip()) / ".git"
-        except subprocess.CalledProcessError | FileNotFoundError:
+        except (subprocess.CalledProcessError, FileNotFoundError):
             return None

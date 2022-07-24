@@ -17,6 +17,7 @@ pytest = "^7.1.2"
 mypy = "^0.971"
 black = "^22.6.0"
 isort = "^5.10.1"
+pre-commit = "^2.20.0"
 
 [tool.poetry.plugins."poetry.application.plugin"]
 poetry-pre-commit-plugin = "poetry_pre_commit_plugin.plugin:PreCommitPlugin"
