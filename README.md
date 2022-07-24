@@ -9,7 +9,7 @@ project.
 Personally I find that running `pre-commit install` every time I start working
 on a new repository is very easy to forget - there have been numerous occasions
 where I'd forget this step, commit some changes only to be surprised later on
-by failing CI checks :grinning: This plugin aims to solve this issue by doing
+by failing CI checks :sweat_smile: This plugin aims to solve this issue by doing
 this small step for me automatically behind the scenes.
 
 ## Installation
