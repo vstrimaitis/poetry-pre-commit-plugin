@@ -66,12 +66,10 @@ class PreCommitPlugin(ApplicationPlugin):  # type: ignore
 
     def _is_pre_commit_package_installed(self) -> bool:
         try:
-            return_code = subprocess.check_call(
-                ["poetry", "run", "pre-commit", "--version"],
-                stdout=subprocess.DEVNULL,
-                stderr=subprocess.DEVNULL,
-            )
-            return return_code == 0
+            output = subprocess.check_output(
+                ["poetry", "run", "pip", "freeze", "--local"],
+            ).decode()
+            return "pre-commit" in output
         except FileNotFoundError:
             return False
 
