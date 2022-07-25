@@ -9,7 +9,7 @@ project.
 Personally I find that running `pre-commit install` every time I start working
 on a new repository is very easy to forget - there have been numerous occasions
 where I'd forget this step, commit some changes only to be surprised later on
-by failing CI checks :sweat_smile: This plugin aims to solve this issue by doing
+by failing CI checks 😅 This plugin aims to solve this issue by doing
 this small step for me automatically behind the scenes.
 
 ## Installation
@@ -18,13 +18,13 @@ The plugin requires Poetry version `1.2.0b1` or above. Since this is still a
 pre-release version, you have to specify it explicitly when installing:
 
 ```
-$ curl -sSL https://install.python-poetry.org | python3.9 - --version 1.2.0b3
+curl -sSL https://install.python-poetry.org | python3.9 - --version 1.2.0b3
 ```
 
 Once a valid version of Poetry is set up, you can install the plugin like so:
 
 ```
-$ poetry self add poetry-pre-commit-plugin
+poetry self add poetry-pre-commit-plugin
 ```
 
 For more in-depth information, please refer to
