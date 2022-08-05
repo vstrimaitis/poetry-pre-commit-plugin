@@ -22,6 +22,11 @@ class PreCommitPlugin(ApplicationPlugin):  # type: ignore
         # this attribute seems to only be present on a TERMINATE event, so be careful
         # to not use similar logic if listening to different events
         exit_code: int = event._exit_code
+        command = event.command
+
+        if not any(isinstance(command, t) for t in [InstallCommand, AddCommand]):
+            # Only run the plugin for install and add commands
+            return
 
         if exit_code != 0:
             # The command failed, so the plugin shouldn't do anything
@@ -38,11 +43,10 @@ class PreCommitPlugin(ApplicationPlugin):  # type: ignore
             # pre-commit hooks already installed - nothing to do
             return
 
-        command = event.command
-        if isinstance(command, InstallCommand) or isinstance(command, AddCommand):
-            if command.option("dry-run") is True:
-                return
-            self._install_pre_commit_hooks(event.io)
+        if command.option("dry-run") is True:
+            return
+
+        self._install_pre_commit_hooks(event.io)
 
     def _install_pre_commit_hooks(self, io: IO) -> None:
         try:
