@@ -54,7 +54,7 @@ class PreCommitPlugin(ApplicationPlugin):  # type: ignore
         if command.option("dry-run") is True:
             return
 
-        self._install_pre_commit_hooks(event.io)
+        self._install_pre_commit_hooks(io)
 
     def _install_pre_commit_hooks(self, io: IO) -> None:
         try:
