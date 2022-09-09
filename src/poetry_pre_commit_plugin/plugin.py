@@ -2,13 +2,15 @@ import subprocess
 from pathlib import Path
 from typing import Optional
 
-from cleo.events.console_command_event import ConsoleCommandEvent
+from cleo.events.console_terminate_event import ConsoleTerminateEvent
 from cleo.events.console_events import TERMINATE
 from cleo.events.event_dispatcher import EventDispatcher
 from cleo.io.io import IO
+from cleo.io.outputs.output import Verbosity
 from poetry.console.application import Application
 from poetry.console.commands.add import AddCommand
 from poetry.console.commands.install import InstallCommand
+from poetry.console.commands.self.self_command import SelfCommand
 from poetry.plugins.application_plugin import ApplicationPlugin
 
 
@@ -17,19 +19,25 @@ class PreCommitPlugin(ApplicationPlugin):  # type: ignore
         application.event_dispatcher.add_listener(TERMINATE, self._handle_post_command)
 
     def _handle_post_command(
-        self, event: ConsoleCommandEvent, event_name: str, dispatcher: EventDispatcher
+        self, event: ConsoleTerminateEvent, event_name: str, dispatcher: EventDispatcher
     ) -> None:
-        # this attribute seems to only be present on a TERMINATE event, so be careful
-        # to not use similar logic if listening to different events
-        exit_code: int = event._exit_code
+
+        if event.exit_code != 0:
+            # The command failed, so the plugin shouldn't do anything
+            return
+
         command = event.command
+        io = event.io
+
+        if isinstance(command, SelfCommand):
+            io.write_line(
+                "<info>Poetry pre-commit plugin does not run for 'self' command.</info>",
+                verbosity=Verbosity.DEBUG,
+            )
+            return
 
         if not any(isinstance(command, t) for t in [InstallCommand, AddCommand]):
             # Only run the plugin for install and add commands
-            return
-
-        if exit_code != 0:
-            # The command failed, so the plugin shouldn't do anything
             return
 
         if not self._is_pre_commit_package_installed():
