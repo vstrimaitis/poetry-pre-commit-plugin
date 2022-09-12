@@ -1,5 +1,7 @@
 # Poetry pre-commit Plugin
 
+![PyPI](https://img.shields.io/pypi/v/poetry-pre-commit-plugin?color=blue)
+
 A [Poetry](https://python-poetry.org/) plugin for automatically installing git
 pre-commit hooks whenever `pre-commit` is specified as a dependency of the
 project.
