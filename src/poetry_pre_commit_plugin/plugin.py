@@ -60,7 +60,7 @@ class PreCommitPlugin(ApplicationPlugin):  # type: ignore
         try:
             io.write_line("<info>Installing pre-commit hooks...</>")
             return_code = subprocess.check_call(
-                ["poetry", "run", "pre-commit", "install",],
+                ["poetry", "run", "pre-commit", "install", "--install-hooks", "-t", "post-checkout", "-t", "post-merge", "-t", "pre-commit"],
                 stdout=subprocess.DEVNULL,
                 stderr=subprocess.DEVNULL,
             )
