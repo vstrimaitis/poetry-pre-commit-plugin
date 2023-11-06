@@ -41,7 +41,8 @@ the plugin will check the following conditions:
 1. Is the project inside a git repository?
 2. Is `pre-commit` listed as a dependency of the project (or, in the case of
    `poetry add` - was it just added)?
-3. Has the pre-commit hook **not** been activated yet (i.e. the file
-   `.git/hooks/pre-commit` does not exist)?
+3. Has the git hook have **not** been activated yet (i.e. the file
+   `.git/hooks/pre-commit`, `.git/hooks/post-checkout` or `.git/hooks/post-merge`
+   does not exist)?
 
-If all conditions are met, the plugin will run `pre-commit install` for you.
+If all conditions are met, the plugin will run `pre-commit install --install-hooks -t post-checkout -t post-merge -t pre-commit` for you.
