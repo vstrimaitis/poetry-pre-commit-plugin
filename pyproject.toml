@@ -10,7 +10,7 @@ packages = [{include = "poetry_pre_commit_plugin", from = "src"}]
 
 [tool.poetry.dependencies]
 python = "^3.7"
-poetry = "^1.2.0b1"
+poetry = "^2.0.0"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^7.1.2"
