@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "poetry-pre-commit-plugin"
-version = "0.1.2"
+version = "0.2.0"
 description = "Poetry plugin for automatically installing pre-commit hook when it is added to a project"
 authors = ["Vytautas Strimaitis <vstrimaitis@gmail.com>"]
 homepage = "https://github.com/vstrimaitis/poetry-pre-commit-plugin"
