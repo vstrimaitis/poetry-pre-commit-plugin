@@ -44,11 +44,11 @@ class PreCommitPlugin(ApplicationPlugin):  # type: ignore
         if not self._is_pre_commit_package_installed(io):
             return
 
-        if self._get_git_directory_path(io) is None:
+        if self._get_git_directory_path() is None:
             # Not in a git repository - can't install hooks
             return
 
-        if self._are_pre_commit_hooks_installed(io):
+        if self._are_pre_commit_hooks_installed():
             # pre-commit hooks already installed - nothing to do
             return
 
