@@ -1,3 +1,4 @@
+import re
 import subprocess
 from pathlib import Path
 from typing import Optional
@@ -40,14 +41,14 @@ class PreCommitPlugin(ApplicationPlugin):  # type: ignore
             # Only run the plugin for install and add commands
             return
 
-        if not self._is_pre_commit_package_installed():
+        if not self._is_pre_commit_package_installed(io):
             return
 
-        if self._get_git_directory_path() is None:
+        if self._get_git_directory_path(io) is None:
             # Not in a git repository - can't install hooks
             return
 
-        if self._are_pre_commit_hooks_installed():
+        if self._are_pre_commit_hooks_installed(io):
             # pre-commit hooks already installed - nothing to do
             return
 
@@ -76,11 +77,23 @@ class PreCommitPlugin(ApplicationPlugin):  # type: ignore
             )
             io.write_error_line(f"<error>{e}</>")
 
-    def _is_pre_commit_package_installed(self) -> bool:
+    def _is_pre_commit_package_installed(self, io: IO) -> bool:
         try:
             output = subprocess.check_output(
                 ["poetry", "run", "pip", "freeze", "--local"],
             ).decode()
+ 
+            if re.search(r"pre[-_]commit", output):
+                io.write_line(
+                    "<info>pre-commit package is installed</info>",
+                    verbosity=Verbosity.DEBUG,
+                )
+                return True
+            
+            io.write_line(
+                "<info>pre-commit package is not installed</info>",
+                verbosity=Verbosity.DEBUG,
+            )
             return "pre-commit" in output
         except FileNotFoundError:
             return False
